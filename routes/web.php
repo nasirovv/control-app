@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\ControlEvent;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/test', function () {
+    event(new ControlEvent('Furqat'));
+});
+
+Route::get('/', function (){
     return view('welcome');
 });

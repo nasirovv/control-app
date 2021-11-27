@@ -20,7 +20,7 @@ class MainController extends Controller
         DB::beginTransaction();
         $history  = History::query()->updateOrCreate([
            'user_id' => $user->id,
-            'day' => Carbon::tomorrow()->format('Y-m-d'),
+            'day' => Carbon::now()->format('Y-m-d'),
         ]);
         if($request->get('status') && !$history['arrival_time']){
             $history['arrival_time'] = Carbon::now('Asia/Tashkent')->format('H:i:s');
