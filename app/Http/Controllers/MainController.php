@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ControlEvent;
 use App\Models\History;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller
 {
 
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $user = User::query()
             ->where('uniqueId', $request->get('uniqueId'))
@@ -32,6 +34,22 @@ class MainController extends Controller
         }
         $history->save();
         DB::commit();
+        $data = [
+            'day' => $history['day'],
+            'arrival_time' => $history['arrival_time'],
+            'departure_time' => $history['departure_time'],
+            'user_id' => $history['user_id'],
+            'user' => [
+                'name' => User::query()->find($history['user_id'])->name,
+                'uniqueId' => User::query()->find($history['user_id'])->uniqueId,
+            ]
+        ];
+        event(new ControlEvent($data));
         return response()->json('Successfully added', 201);
+    }
+
+    public function getHistories(){
+        $histories = History::with('user')->get();
+        return view('welcome', compact('histories'));
     }
 }

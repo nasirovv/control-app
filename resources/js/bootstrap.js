@@ -39,6 +39,6 @@ window.Echo = new Echo({
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     forceTLS: true
 });
-window.Echo.channel('control').listen('ControlEvent', (e) => {
-    console.log(e);
-})
+// window.Echo.channel('control').listen('ControlEvent', (e) => {
+//     console.log(e);
+// })
