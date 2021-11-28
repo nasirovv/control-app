@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Http\Resources\HistoryResource;
 use App\Models\History;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -12,6 +13,8 @@ use Maatwebsite\Excel\Events\AfterSheet;
 
 class HistoryExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents
 {
+    use Exportable;
+
     public function collection()
     {
         return HistoryResource::collection(History::all());

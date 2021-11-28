@@ -23,4 +23,5 @@ Route::get('/test', function () {
 Route::get('/', [MainController::class, 'home']);
 Route::get('/getHistories', [MainController::class, 'getHistoriesApi']);
 Route::get('/users/search/{searchedUser}', [MainController::class, 'search']);
-Route::get('excel', [MainController::class, 'excel']);
+Route::get('excel', [MainController::class, 'excel'])->name('excel');
+Route::post('mail-send', [MainController::class, 'mailSend'])->name('mail');

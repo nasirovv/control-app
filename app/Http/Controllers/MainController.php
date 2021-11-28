@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Events\ControlEvent;
 use App\Exports\HistoryExport;
+use App\Http\Resources\HistoryResource;
+use App\Mail\ControlMail;
 use App\Models\History;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -23,15 +27,15 @@ class MainController extends Controller
             ->select('id')
             ->firstOrFail();
         DB::beginTransaction();
-        $history  = History::query()->updateOrCreate([
-           'user_id' => $user->id,
+        $history = History::query()->updateOrCreate([
+            'user_id' => $user->id,
             'day' => Carbon::now()->format('Y-m-d'),
         ]);
-        if($request->get('status') && !$history['arrival_time']){
+        if ($request->get('status') && !$history['arrival_time']) {
             $history['arrival_time'] = Carbon::now('Asia/Tashkent')->format('H:i:s');
-        }else if(!$request->get('status') && $history['arrival_time'] && !$history['departure_time']){
+        } else if (!$request->get('status') && $history['arrival_time'] && !$history['departure_time']) {
             $history['departure_time'] = Carbon::now('Asia/Tashkent')->format('H:i:s');
-        }else{
+        } else {
             DB::rollBack();
             return response()->json('Something went wrong', 400);
         }
@@ -51,7 +55,8 @@ class MainController extends Controller
         return response()->json('Successfully added', 201);
     }
 
-    public function home(){
+    public function home()
+    {
         return view('home');
     }
 
@@ -65,9 +70,9 @@ class MainController extends Controller
     {
         $search = strtolower($searchedUser);
         $histories = History::query()
-            ->when($search, function ($query) use($search) {
-                $query->whereHas('user', function ($q) use ($search){
-                    $q->where('name', 'like', '%'.$search.'%');
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%');
                 });
             })
             ->with('user')
@@ -79,5 +84,12 @@ class MainController extends Controller
     public function excel(): BinaryFileResponse
     {
         return Excel::download(new HistoryExport, 'histories.xlsx');
+    }
+
+    public function mailSend(): RedirectResponse
+    {
+        Mail::to('newControl@example.com')->send(new ControlMail());
+
+        return redirect()->back();
     }
 }

@@ -2125,18 +2125,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -43940,58 +43928,7 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      {
-        staticClass:
-          "d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom",
-      },
-      [
-        _c("div", { staticClass: "input-group" }, [
-          _c("div", { staticClass: "form-outline" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.searchedUser,
-                  expression: "searchedUser",
-                },
-              ],
-              staticClass: "form-control",
-              attrs: { type: "search", id: "form1", placeholder: "Search" },
-              domProps: { value: _vm.searchedUser },
-              on: {
-                input: function ($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.searchedUser = $event.target.value
-                },
-              },
-            }),
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary ml-2",
-              attrs: { type: "button" },
-              on: { click: _vm.search },
-            },
-            [_vm._v("\n                Search\n            ")]
-          ),
-        ]),
-        _vm._v(" "),
-        _c(
-          "a",
-          { staticClass: "btn btn-success mr-3", attrs: { href: "/excel" } },
-          [_vm._v("Excel")]
-        ),
-      ]
-    ),
-    _vm._v(" "),
-    _c("h2", [_vm._v("Users")]),
+    _c("h2", { staticClass: "my-3" }, [_vm._v("Users")]),
     _vm._v(" "),
     _c("div", { staticClass: "table-responsive" }, [
       _c("table", { staticClass: "table table-striped table-sm" }, [

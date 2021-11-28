@@ -1,18 +1,6 @@
 <template>
     <div>
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <div class="input-group">
-                <div class="form-outline">
-                    <input type="search" id="form1" class="form-control" placeholder="Search" v-model="searchedUser" />
-                </div>
-                <button type="button" class="btn btn-primary ml-2" @click="search">
-                    Search
-                </button>
-            </div>
-            <a href="/excel" class="btn btn-success mr-3">Excel</a>
-        </div>
-
-        <h2>Users</h2>
+        <h2 class="my-3">Users</h2>
         <div class="table-responsive">
             <table class="table table-striped table-sm">
                 <thead>
