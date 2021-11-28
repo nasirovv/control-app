@@ -1,20 +1,18 @@
 <template>
     <div>
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-            <h1 class="h2">Dashboard</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group mr-2">
-                    <button class="btn btn-sm btn-outline-secondary">Share</button>
-                    <button class="btn btn-sm btn-outline-secondary">Export</button>
+            <div class="input-group">
+                <div class="form-outline">
+                    <input type="search" id="form1" class="form-control" placeholder="Search" v-model="searchedUser" />
                 </div>
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                    <span data-feather="calendar"></span>
-                    This week
+                <button type="button" class="btn btn-primary ml-2" @click="search">
+                    Search
                 </button>
             </div>
+            <a href="/excel" class="btn btn-success mr-3">Excel</a>
         </div>
 
-        <h2>Section title</h2>
+        <h2>Users</h2>
         <div class="table-responsive">
             <table class="table table-striped table-sm">
                 <thead>
@@ -26,7 +24,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="history in changedHistories" :key="history.id">
+                <tr v-for="history in histories" :key="history.id">
                     <td>{{ history.user.name }}</td>
                     <td>{{ history.day }}</td>
                     <td>{{ history.arrival_time }}</td>
@@ -39,31 +37,44 @@
 </template>
 <script>
 export default {
-    props: ['histories'],
-    created() {
-        window.Echo.channel('control').listen('ControlEvent', (e) => {
-            JSON.parse(JSON.stringify(this.changedHistories)).push();
-            // let a = 1;
-            // this.changedHistories.forEach(function (history){
-            //     console.log(history)
-            //     if(history.user_id === e.user_id && history.day === e.day){
-            //         history = e;
-            //         a++;
-            //         console.log(a);
-            //         console.log(history)
-            //     }
-            // })
-            // if (a){
-            //     this.changedHistories.push(e);
-            // }
-            // console.log(this.changedHistories)
-        })
-    },
     data(){
-      return{
-          changedHistories: this.histories
-      }
+        return{
+            histories: [],
+            searchedUser: ''
+        }
+    },
+    methods: {
+        getHistories(){
+            axios.get('/getHistories')
+            .then(response => {
+                this.histories = response.data
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
+        search(){
+            axios.get("/users/search/"+this.searchedUser)
+                .then(response => {
+                    this.histories = response.data
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
+        connect(){
+            window.Echo.channel('control').listen('ControlEvent', (e) => {
+                this.getHistories();
+            })
+        },
+    },
+    created(){
+        this.getHistories();
+    },
+    mounted() {
+        this.connect();
     }
+
 }
 </script>
 <style scoped>

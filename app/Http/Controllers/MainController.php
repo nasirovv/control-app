@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Events\ControlEvent;
+use App\Exports\HistoryExport;
 use App\Models\History;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class MainController extends Controller
 {
@@ -33,7 +36,6 @@ class MainController extends Controller
             return response()->json('Something went wrong', 400);
         }
         $history->save();
-        DB::commit();
         $data = [
             'day' => $history['day'],
             'arrival_time' => $history['arrival_time'],
@@ -45,11 +47,37 @@ class MainController extends Controller
             ]
         ];
         event(new ControlEvent($data));
+        DB::commit();
         return response()->json('Successfully added', 201);
     }
 
-    public function getHistories(){
-        $histories = History::with('user')->get();
-        return view('welcome', compact('histories'));
+    public function home(){
+        return view('home');
+    }
+
+    public function getHistoriesApi(): JsonResponse
+    {
+        $histories = History::with('user')->latest()->get();
+        return response()->json($histories, 200);
+    }
+
+    public function search($searchedUser): JsonResponse
+    {
+        $search = strtolower($searchedUser);
+        $histories = History::query()
+            ->when($search, function ($query) use($search) {
+                $query->whereHas('user', function ($q) use ($search){
+                    $q->where('name', 'like', '%'.$search.'%');
+                });
+            })
+            ->with('user')
+            ->latest()
+            ->get();
+        return response()->json($histories, 200);
+    }
+
+    public function excel(): BinaryFileResponse
+    {
+        return Excel::download(new HistoryExport, 'histories.xlsx');
     }
 }

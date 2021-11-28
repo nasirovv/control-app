@@ -2137,34 +2137,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['histories'],
-  created: function created() {
-    var _this = this;
-
-    window.Echo.channel('control').listen('ControlEvent', function (e) {
-      JSON.parse(JSON.stringify(_this.changedHistories)).push(); // let a = 1;
-      // this.changedHistories.forEach(function (history){
-      //     console.log(history)
-      //     if(history.user_id === e.user_id && history.day === e.day){
-      //         history = e;
-      //         a++;
-      //         console.log(a);
-      //         console.log(history)
-      //     }
-      // })
-      // if (a){
-      //     this.changedHistories.push(e);
-      // }
-      // console.log(this.changedHistories)
-    });
-  },
   data: function data() {
     return {
-      changedHistories: this.histories
+      histories: [],
+      searchedUser: ''
     };
+  },
+  methods: {
+    getHistories: function getHistories() {
+      var _this = this;
+
+      axios.get('/getHistories').then(function (response) {
+        _this.histories = response.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    search: function search() {
+      var _this2 = this;
+
+      axios.get("/users/search/" + this.searchedUser).then(function (response) {
+        _this2.histories = response.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    connect: function connect() {
+      var _this3 = this;
+
+      window.Echo.channel('control').listen('ControlEvent', function (e) {
+        _this3.getHistories();
+      });
+    }
+  },
+  created: function created() {
+    this.getHistories();
+  },
+  mounted: function mounted() {
+    this.connect();
   }
 });
 
@@ -43929,17 +43940,66 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
+    _c(
+      "div",
+      {
+        staticClass:
+          "d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom",
+      },
+      [
+        _c("div", { staticClass: "input-group" }, [
+          _c("div", { staticClass: "form-outline" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.searchedUser,
+                  expression: "searchedUser",
+                },
+              ],
+              staticClass: "form-control",
+              attrs: { type: "search", id: "form1", placeholder: "Search" },
+              domProps: { value: _vm.searchedUser },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.searchedUser = $event.target.value
+                },
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary ml-2",
+              attrs: { type: "button" },
+              on: { click: _vm.search },
+            },
+            [_vm._v("\n                Search\n            ")]
+          ),
+        ]),
+        _vm._v(" "),
+        _c(
+          "a",
+          { staticClass: "btn btn-success mr-3", attrs: { href: "/excel" } },
+          [_vm._v("Excel")]
+        ),
+      ]
+    ),
     _vm._v(" "),
-    _c("h2", [_vm._v("Section title")]),
+    _c("h2", [_vm._v("Users")]),
     _vm._v(" "),
     _c("div", { staticClass: "table-responsive" }, [
       _c("table", { staticClass: "table table-striped table-sm" }, [
-        _vm._m(1),
+        _vm._m(0),
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.changedHistories, function (history) {
+          _vm._l(_vm.histories, function (history) {
             return _c("tr", { key: history.id }, [
               _c("td", [_vm._v(_vm._s(history.user.name))]),
               _vm._v(" "),
@@ -43957,42 +44017,6 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom",
-      },
-      [
-        _c("h1", { staticClass: "h2" }, [_vm._v("Dashboard")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "btn-toolbar mb-2 mb-md-0" }, [
-          _c("div", { staticClass: "btn-group mr-2" }, [
-            _c("button", { staticClass: "btn btn-sm btn-outline-secondary" }, [
-              _vm._v("Share"),
-            ]),
-            _vm._v(" "),
-            _c("button", { staticClass: "btn btn-sm btn-outline-secondary" }, [
-              _vm._v("Export"),
-            ]),
-          ]),
-          _vm._v(" "),
-          _c(
-            "button",
-            { staticClass: "btn btn-sm btn-outline-secondary dropdown-toggle" },
-            [
-              _c("span", { attrs: { "data-feather": "calendar" } }),
-              _vm._v("\n                This week\n            "),
-            ]
-          ),
-        ]),
-      ]
-    )
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement

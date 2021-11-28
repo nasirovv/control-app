@@ -20,4 +20,7 @@ Route::get('/test', function () {
     event(new ControlEvent('Furqat'));
 });
 
-Route::get('/', [MainController::class, 'getHistories']);
+Route::get('/', [MainController::class, 'home']);
+Route::get('/getHistories', [MainController::class, 'getHistoriesApi']);
+Route::get('/users/search/{searchedUser}', [MainController::class, 'search']);
+Route::get('excel', [MainController::class, 'excel']);
