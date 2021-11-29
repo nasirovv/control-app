@@ -86,10 +86,10 @@ class MainController extends Controller
         return Excel::download(new HistoryExport, 'histories.xlsx');
     }
 
-    public function mailSend(): RedirectResponse
+    public function mailSend(): JsonResponse
     {
         Mail::to('newControl@example.com')->send(new ControlMail());
 
-        return redirect()->back();
+        return response()->json('Successfully send', 200);
     }
 }

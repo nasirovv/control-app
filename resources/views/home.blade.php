@@ -30,21 +30,6 @@
             </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-            <div class="d-flex align-items-center my-2">
-                <div class="input-group">
-                    <div class="form-outline">
-                        <input type="search" id="form1" class="form-control" placeholder="Search" v-model="searchedUser" />
-                    </div>
-                    <button type="button" class="btn btn-primary ml-2" @click="search">
-                        Search
-                    </button>
-                </div>
-                <form action="{{ route('mail') }}" style="width: 170px" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-primary ">Send to Mail</button>
-                </form>
-                <a href="{{ route('excel') }}" class="btn btn-success" style="width: 170px">Download Excel</a>
-            </div>
             <users></users>
         </main>
     </div>
