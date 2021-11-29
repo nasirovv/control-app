@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\ControlEvent;
 use App\Exports\HistoryExport;
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\HistoryResource;
 use App\Mail\ControlMail;
 use App\Models\History;
@@ -58,6 +59,17 @@ class MainController extends Controller
     public function home()
     {
         return view('home');
+    }
+
+    public function create()
+    {
+        return view('create');
+    }
+
+    public function store(UserRequest $request): JsonResponse
+    {
+        User::query()->create($request->all());
+        return response()->json('Successfully added', 201);
     }
 
     public function getHistoriesApi(): JsonResponse

@@ -1,5 +1,5 @@
 @extends('layout')
 
 @section('content')
-    <users></users>
+    <add-user></add-user>
 @endsection
