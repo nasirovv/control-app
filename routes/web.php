@@ -24,3 +24,5 @@ Route::get('/getHistories', [MainController::class, 'getHistoriesApi']);
 Route::get('/users/search/{searchedUser}', [MainController::class, 'search'])->name('search');
 Route::get('excel', [MainController::class, 'excel'])->name('excel');
 Route::post('mail-send', [MainController::class, 'mailSend'])->name('mail');
+
+Route::get('users', [MainController::class, 'users']);

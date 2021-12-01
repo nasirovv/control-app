@@ -104,4 +104,9 @@ class MainController extends Controller
 
         return response()->json('Successfully send', 200);
     }
+
+    public function users()
+    {
+        return view('users');
+    }
 }
