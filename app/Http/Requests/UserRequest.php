@@ -25,7 +25,8 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'uniqueId' => 'required|unique:users,uniqueId'
+            'uniqueId' => 'required|unique:users,uniqueId',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
     }
 }

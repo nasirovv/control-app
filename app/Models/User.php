@@ -21,6 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'uniqueId',
+        'image',
     ];
 
     /**
@@ -45,5 +46,14 @@ class User extends Authenticatable
     public function histories(): HasMany
     {
         return $this->hasMany(History::class);
+    }
+
+    public function getImageAttribute($value)
+    {
+        if ($value) {
+            return asset('storage/images/' . $value);
+        } else {
+            return asset('img/no-image.png');
+        }
     }
 }

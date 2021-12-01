@@ -66,12 +66,6 @@ class MainController extends Controller
         return view('create');
     }
 
-    public function store(UserRequest $request): JsonResponse
-    {
-        User::query()->create($request->all());
-        return response()->json('Successfully added', 201);
-    }
-
     public function getHistoriesApi(): JsonResponse
     {
         $histories = History::with('user')->latest()->get();
@@ -105,8 +99,4 @@ class MainController extends Controller
         return response()->json('Successfully send', 200);
     }
 
-    public function users()
-    {
-        return view('users');
-    }
 }

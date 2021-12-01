@@ -10,39 +10,46 @@
                             <h2>Manage <b>Employees</b></h2>
                         </div>
                         <div class="col-xs-6">
-                            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
+                            <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
+                                    class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
                         </div>
                     </div>
                 </div>
                 <table class="table table-striped table-hover">
                     <thead>
-                        <tr>
-                            <th>Full Name</th>
-                            <th>Unique Id</th>
-                            <th>Image</th>
-                            <th>Actions</th>
-                        </tr>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Unique Id</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
                     </thead>
                     <tbody>
+                    @foreach($users as $user)
                         <tr>
-                            <td>Thomas Hardy</td>
-                            <td>12123131</td>
-                            <td>12123131</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->uniqueId }}</td>
+                            <td><img src="{{ $user->image }}" style="width: 60px" alt="image"></td>
                             <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons"
+                                                                                                 data-toggle="tooltip"
+                                                                                                 title="Edit">&#xE254;</i></a>
+                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i
+                                        class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                             </td>
                         </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-    <!-- Edit Modal HTML -->
+    <!-- Add Modal HTML -->
     <div id="addEmployeeModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form>
+                <form action="{{ route('users.store') }}" method="post" enctype="multipart/form-data">
+                    @csrf
                     <div class="modal-header">
                         <h4 class="modal-title">Add Employee</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -50,19 +57,15 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" name="name" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" required>
+                            <label>Unique Id</label>
+                            <input type="text" name="uniqueId" class="form-control" required>
                         </div>
                         <div class="form-group">
-                            <label>Address</label>
-                            <textarea class="form-control" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input type="text" class="form-control" required>
+                            <label>Image</label>
+                            <input type="file" name="image" class="form-control" required>
                         </div>
                     </div>
                     <div class="modal-footer">
