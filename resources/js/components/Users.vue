@@ -120,6 +120,13 @@ export default {
         connect() {
             window.Echo.channel('control').listen('ControlEvent', (e) => {
                 this.getHistories();
+                this.$swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Your new history saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
             })
         },
     },

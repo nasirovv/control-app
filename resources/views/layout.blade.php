@@ -94,8 +94,12 @@
         table.table td a.edit {
             color: #FFC107;
         }
-        table.table td a.delete {
+        table.table td button.delete {
             color: #F44336;
+        }
+        button.delete{
+            border: none;
+            background-color: transparent;
         }
         table.table td i {
             font-size: 19px;
@@ -241,18 +245,18 @@
             </div>
         @endif
         <nav class="col-md-2 d-none d-md-block bg-light sidebar pt-3">
-            <div class="sidebar-sticky">
+            <div class="sidebar-sticky vh-100">
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ route('home') }}">
                             <span data-feather="home"></span>
-                            Users <span class="sr-only">(current)</span>
+                            Histories <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('users.create') }}">
+                        <a class="nav-link" href="{{ route('users.index') }}">
                             <span data-feather="layers"></span>
-                            Add new User
+                            Users
                         </a>
                     </li>
                 </ul>

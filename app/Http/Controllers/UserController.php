@@ -8,13 +8,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::all();
-        return view('users', compact('users'));
+        return view('users.index', compact('users'));
     }
 
     public function create()
@@ -41,7 +42,7 @@ class UserController extends Controller
             $user->save();
         }
         DB::commit();
-        return redirect()->back();
+        return redirect()->back()->withInput();
     }
 
     public function show($id)
@@ -51,16 +52,37 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        //
+        $user = User::query()->findOrFail($id);
+        return view('users.edit', ['id' => $id, 'oldName' => $user->name, 'oldUniqueId' => $user->uniqueId, 'image' => $user->image]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user): RedirectResponse
     {
-        //
+        DB::beginTransaction();
+        $user->update($request->all());
+        if ($request->hasFile('image')){
+            try{
+                $file_path = storage_path().'/public/images/'.$user->image;
+                if(Storage::exists($file_path)) {
+                    unlink($file_path);
+                }
+                $imageName = time().$request->file('image')->getClientOriginalName();
+                $request->file('image')->storeAs('public/images', $imageName);
+                $user['image'] = $imageName;
+            }catch (\Exception $e){
+                Log::error($e);
+                DB::rollBack();
+            }
+            $user->save();
+        }
+        DB::commit();
+        return redirect()->route('users.index');
     }
 
-    public function destroy($id)
+    public function destroy($id): RedirectResponse
     {
-        //
+        $user = User::query()->findOrFail($id);
+        $user->delete();
+        return redirect()->back();
     }
 }
