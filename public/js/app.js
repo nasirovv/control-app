@@ -2195,14 +2195,17 @@ __webpack_require__.r(__webpack_exports__);
       var _this6 = this;
 
       window.Echo.channel('control').listen('ControlEvent', function (e) {
+        console.log(e.user.user.name);
+
         _this6.getHistories();
 
         _this6.$swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Your new history saved',
-          showConfirmButton: false,
-          timer: 1500
+          title: e.user.user.name,
+          html: "Day: " + e.user.day + "Arrival time" + e.user.arrival_time + "Departure_time" + e.user.departure_time,
+          imageUrl: e.user.user.image,
+          imageWidth: 400,
+          imageHeight: 200,
+          imageAlt: 'Users image'
         });
       });
     }

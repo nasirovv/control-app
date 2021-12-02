@@ -49,6 +49,7 @@ class MainController extends Controller
             'user' => [
                 'name' => User::query()->find($history['user_id'])->name,
                 'uniqueId' => User::query()->find($history['user_id'])->uniqueId,
+                'image' => User::query()->find($history['user_id'])->image,
             ]
         ];
         event(new ControlEvent($data));

@@ -119,13 +119,18 @@ export default {
         },
         connect() {
             window.Echo.channel('control').listen('ControlEvent', (e) => {
+                console.log(e.user.user.name)
                 this.getHistories();
                 this.$swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Your new history saved',
-                    showConfirmButton: false,
-                    timer: 1500
+                    title: e.user.user.name,
+                    html:
+                        "Day: " + e.user.day +
+                        "Arrival time" + e.user.arrival_time +
+                        "Departure_time" + e.user.departure_time,
+                    imageUrl: e.user.user.image,
+                    imageWidth: 400,
+                    imageHeight: 200,
+                    imageAlt: 'Users image',
                 })
             })
         },
