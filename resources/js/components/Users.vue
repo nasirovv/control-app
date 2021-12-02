@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="d-flex align-items-center my-2 justify-content-between">
-            <h2 class="my-auto">Users</h2>
+            <h2 class="my-auto">Histories</h2>
             <div class="d-flex align-items-center justify-content-between">
                 <button class="btn btn-primary mr-4" @click="alertDisplay">Send to Mail</button>
                 <a href="/excel" target="_blank" class="btn btn-success" style="width: 170px">Download Excel</a>

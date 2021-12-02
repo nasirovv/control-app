@@ -7,11 +7,11 @@
                 <div class="table-title">
                     <div class="row d-flex justify-content-between">
                         <div class="col-xs-6">
-                            <h2>Manage <b>Employees</b></h2>
+                            <h2>Manage <b>Users</b></h2>
                         </div>
                         <div class="col-xs-6">
                             <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                    class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
+                                    class="material-icons">&#xE147;</i> <span>Add New User</span></a>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="form-group">
                             <label>Image</label>
-                            <input type="file" name="image" class="form-control" required>
+                            <input type="file" name="image" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">

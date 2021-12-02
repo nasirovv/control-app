@@ -2247,9 +2247,7 @@ window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', Object(function webpackMissingModule() { var e = new Error("Cannot find module './components/ExampleComponent.vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 Vue.component('users', (__webpack_require__(/*! ./components/Users.vue */ "./resources/js/components/Users.vue")["default"]));
-Vue.component('add-user', Object(function webpackMissingModule() { var e = new Error("Cannot find module './components/AddUser.vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -2310,7 +2308,10 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: "0419adadf7eae0d7f12f",
   cluster: "ap2",
-  forceTLS: true
+  forceTLS: false,
+  wsHost: window.location.hostname,
+  wsPort: 6001,
+  disableStats: true
 }); // window.Echo.channel('control').listen('ControlEvent', (e) => {
 //     console.log(e);
 // })
@@ -44281,7 +44282,7 @@ var render = function () {
       "div",
       { staticClass: "d-flex align-items-center my-2 justify-content-between" },
       [
-        _c("h2", { staticClass: "my-auto" }, [_vm._v("Users")]),
+        _c("h2", { staticClass: "my-auto" }, [_vm._v("Histories")]),
         _vm._v(" "),
         _c(
           "div",
