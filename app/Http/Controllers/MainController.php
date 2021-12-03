@@ -38,6 +38,7 @@ class MainController extends Controller
             $history['departure_time'] = Carbon::now('Asia/Tashkent')->format('H:i:s');
         } else {
             DB::rollBack();
+            event(new ControlEvent(['error' => 'Something went wrong']));
             return response()->json('Something went wrong', 400);
         }
         $history->save();

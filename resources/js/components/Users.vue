@@ -10,7 +10,8 @@
         <hr>
         <div class="input-group mb-3">
             <div class="form-outline">
-                <input type="text" class="form-control" placeholder="Search" v-model="searchedText" @keyup="searchTimeOut" @keyup.enter="search"/>
+                <input type="text" class="form-control" placeholder="Search" v-model="searchedText"
+                       @keyup="searchTimeOut" @keyup.enter="search"/>
             </div>
             <button type="button" class="btn btn-primary ml-2" @click="search">
                 Search
@@ -77,9 +78,9 @@ export default {
         },
         search() {
             this.loading = true
-            if (!this.searchedText){
+            if (!this.searchedText) {
                 this.getHistories()
-            }else{
+            } else {
                 axios.get("/users/search/" + this.searchedText)
                     .then(response => {
                         this.histories = response.data
@@ -90,7 +91,7 @@ export default {
                     .finally(() => this.loading = false);
             }
         },
-        sendEmail(){
+        sendEmail() {
             axios.post("/mail-send")
                 .then(response => {
                     this.$swal('Send', 'You successfully send this excel file', 'success')
@@ -99,7 +100,7 @@ export default {
                     console.log(error)
                 })
         },
-        alertDisplay(){
+        alertDisplay() {
             this.$swal({
                 title: 'Are you sure?',
                 text: 'You can\'t revert your action',
@@ -110,7 +111,7 @@ export default {
                 showCloseButton: true,
                 showLoaderOnConfirm: true
             }).then((result) => {
-                if(result.value) {
+                if (result.value) {
                     this.sendEmail()
                 } else {
                     this.$swal('Cancelled', 'Your file is still intact', 'info')
@@ -119,19 +120,25 @@ export default {
         },
         connect() {
             window.Echo.channel('control').listen('ControlEvent', (e) => {
-                console.log(e.user.user.name)
-                this.getHistories();
-                this.$swal.fire({
-                    title: e.user.user.name,
-                    html:
-                        "Day: " + e.user.day +
-                        "Arrival time" + e.user.arrival_time +
-                        "Departure_time" + e.user.departure_time,
-                    imageUrl: e.user.user.image,
-                    imageWidth: 400,
-                    imageHeight: 200,
-                    imageAlt: 'Users image',
-                })
+                if (e.user.error) {
+                    this.$swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                } else {
+                    this.getHistories();
+                    this.$swal.fire({
+                        title: e.user.user.name,
+                        html:
+                            "Day: " + e.user.day + "<br>" +
+                            "Arrival time: " + e.user.arrival_time + "<br>" +
+                            "Departure_time: " + e.user.departure_time,
+                        imageUrl: e.user.user.image,
+                        imageWidth: 250,
+                        imageAlt: 'Users image',
+                    })
+                }
             })
         },
     },

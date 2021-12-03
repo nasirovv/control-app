@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     public function store(UserRequest $request): RedirectResponse
@@ -42,7 +42,7 @@ class UserController extends Controller
             $user->save();
         }
         DB::commit();
-        return redirect()->back()->withInput();
+        return redirect()->route('users.index');
     }
 
     public function show($id)
@@ -56,7 +56,7 @@ class UserController extends Controller
         return view('users.edit', ['id' => $id, 'oldName' => $user->name, 'oldUniqueId' => $user->uniqueId, 'image' => $user->image]);
     }
 
-    public function update(Request $request, User $user): RedirectResponse
+    public function update(UserRequest $request, User $user): RedirectResponse
     {
         DB::beginTransaction();
         $user->update($request->all());

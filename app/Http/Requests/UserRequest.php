@@ -23,10 +23,14 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'name' => 'required|string',
             'uniqueId' => 'required|unique:users,uniqueId',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
+        if ($this->routeIs('users.update')){
+            $rules['uniqueId'] = 'required|unique:users,uniqueId,'.$this->user->id;
+        }
+        return $rules;
     }
 }
